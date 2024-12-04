@@ -25,7 +25,7 @@ function show(req, res) {
   const post = posts.find((post) => post.id === postId);
   // Se il post non viene trovato, restituisce un errore 404
   if (!post) {
-    return res.json({
+    return res.status(404).json({
       error: 404,
       message: "Nessun post trovato con questo ID",
     });
@@ -33,19 +33,19 @@ function show(req, res) {
   // Se il post viene trovato, lo restituisce come risposta JSON
   res.json(post);
 }
-
+// create new post
 function store(req, res) {
   route.post("/", (req, res) => {
     res.send("Crea un nuovo post");
   });
 }
-
+// update post by id
 function update(req, res) {
   route.put("/:id", (req, res) => {
     res.send("Modifica post intero");
   });
 }
-
+// modify post by id
 function modify(req, res) {
   route.patch("/:id", (req, res) => {
     res.send("Modifica parziale post");
@@ -65,11 +65,5 @@ function destroy(req, res) {
     });
   }
 }
-function error(req, res) {
-  res.json({
-    error: 404,
-    message: "This pages doesn't exist",
-  });
-} // 404 page for invalid routes
 
-module.exports = { index, show, store, update, modify, destroy, error };
+module.exports = { index, show, store, update, modify, destroy };

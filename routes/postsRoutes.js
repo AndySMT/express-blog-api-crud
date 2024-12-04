@@ -8,13 +8,10 @@ const {
 } = require("../controllers/postController");
 
 // Rotta GET for all posts
-router.get("/", index);
+router.get("/posts", index);
 // Rotta GET for one post
-router.get("/:id", show);
+router.get("/posts/:id", show);
 // Rotta DELETE for one post
-router.delete("/:id", destroy);
-
-// rotta per errore 404
-router.all("*", error);
+router.delete("/posts/:id", destroy);
 
 module.exports = router;
