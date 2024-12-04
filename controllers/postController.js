@@ -17,7 +17,7 @@ function index(req, res) {
     res.json({ lunghezza: posts.length, posts: posts });
   }
 }
-
+// show post by id
 function show(req, res) {
   // Estrae l'ID dai parametri della richiesta e lo converte in un numero intero
   const postId = parseInt(req.params.id);
@@ -25,7 +25,10 @@ function show(req, res) {
   const post = posts.find((post) => post.id === postId);
   // Se il post non viene trovato, restituisce un errore 404
   if (!post) {
-    return res.status(404).send("<h1>Error 404: Post Not Found</h1>");
+    return res.json({
+      error: 404,
+      message: "Nessun post trovato con questo ID",
+    });
   }
   // Se il post viene trovato, lo restituisce come risposta JSON
   res.json(post);
@@ -48,7 +51,7 @@ function modify(req, res) {
     res.send("Modifica parziale post");
   });
 }
-
+// delete post by id
 function destroy(req, res) {
   const id = parseInt(req.params.id); // convert string to number and whit req.params.id I get the id from the url
   const index = posts.findIndex((e) => e.id === id); // find the index of the post by id
@@ -56,15 +59,17 @@ function destroy(req, res) {
     posts.splice(index, 1); // splice method remove the element from the array by index, the second parameter is the number of elements to remove
     res.sendStatus(204); // 204 status code means that the server has successfully fulfilled the request and that there is no additional content to send in the response payload body
   } else {
-    res.status(404);
     res.json({
       error: 404,
-      message: "Post not found",
+      message: "No post found with this ID",
     });
   }
 }
 function error(req, res) {
-  res.status(404).send("<h1>Error 404: Page Not Found</h1>");
+  res.json({
+    error: 404,
+    message: "This pages doesn't exist",
+  });
 } // 404 page for invalid routes
 
 module.exports = { index, show, store, update, modify, destroy, error };
