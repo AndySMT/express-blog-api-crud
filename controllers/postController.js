@@ -23,6 +23,13 @@ function index(req, res) {
 function show(req, res) {
   // Estrae l'ID dai parametri della richiesta e lo converte in un numero intero
   const postId = parseInt(req.params.id);
+  // Se l'ID non è un numero, restituisce un errore 400
+  if (isNaN(postId)) {
+    return res.status(400).json({
+      error: 400,
+      message: "ID non valido inserisci un numero.",
+    });
+  }
   // Cerca il post con l'ID specificato nell'array dei post
   const post = posts.find((post) => post.id === postId);
   // Se il post non viene trovato, restituisce un errore 404
