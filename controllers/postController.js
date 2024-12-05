@@ -53,6 +53,7 @@ function store(req, res) {
     immagine: req.body.immagine,
     tag: req.body.tag,
   };
+  console.log(req.body);
   posts.push(newPost);
   res.status(201).json(newPost);
 }
@@ -64,7 +65,7 @@ function update(req, res) {
   if (!post) {
     res.status(404).json({
       error: 404,
-      message: "il post non esiste",
+      message: "No post found with this ID",
     });
     return;
   }
