@@ -1,5 +1,4 @@
 const posts = require("../dataBase/postsData"); // Importa l'array dei post
-const { post } = require("../routes/postsRoutes");
 
 //! index page and filtre posts by tag
 //*GET
