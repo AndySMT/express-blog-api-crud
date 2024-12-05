@@ -4,6 +4,9 @@ const port = 3000; // Set port
 const router = require("./routes/postsRoutes"); // Import posts routes
 const carsRouter = require("./routes/carsRoutes"); // Import cars routes
 
+//! middleware
+app.use(express.json()); // il body di qualunque richiesta sarà convertito in json
+
 app.use(express.static("public")); // Server static files
 
 app.get("/", (req, res) => {

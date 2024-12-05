@@ -1,6 +1,8 @@
 const posts = require("../dataBase/postsData"); // Importa l'array dei post
+const { post } = require("../routes/postsRoutes");
 
-//index page and filtre posts by tag
+//! index page and filtre posts by tag
+//*GET
 function index(req, res) {
   // Legge il parametro di query 'tag'
   const tag = req.query.tag;
@@ -17,7 +19,8 @@ function index(req, res) {
     res.json({ lunghezza: posts.length, posts: posts });
   }
 }
-// show post by id
+//! show post by id
+//*GET
 function show(req, res) {
   // Estrae l'ID dai parametri della richiesta e lo converte in un numero intero
   const postId = parseInt(req.params.id);
@@ -33,25 +36,54 @@ function show(req, res) {
   // Se il post viene trovato, lo restituisce come risposta JSON
   res.json(post);
 }
-// create new post
+//! create new post
+//*POST
 function store(req, res) {
-  route.post("/", (req, res) => {
-    res.send("Crea un nuovo post");
-  });
+  let newId = 0;
+  for (let i = 0; i < posts.length; i++) {
+    if (posts[i].id > newId) {
+      newId = posts[i].id;
+    }
+  }
+  newId += 1;
+  /////////////////////////////////////////////////
+  const newPost = {
+    id: newId,
+    titolo: req.body.titolo,
+    contenuto: req.body.contenuto,
+    immagine: req.body.immagine,
+    tag: req.body.tag,
+  };
+  posts.push(newPost);
+  res.status(201).json(newPost);
 }
-// update post by id
+//! update post by id (modifa tutto il post)
+//*PUT
 function update(req, res) {
-  route.put("/:id", (req, res) => {
-    res.send("Modifica post intero");
-  });
+  const postId = parseInt(req.params.id);
+  const post = posts.find((post) => post.id === postId);
+  if (!post) {
+    res.status(404).json({
+      error: 404,
+      message: "il post non esiste",
+    });
+    return;
+  }
+  for (let key in post) {
+    if (key !== "id") post[key] = req.body[key];
+  }
+  res.json(post);
 }
-// modify post by id
+
+// modify post by id (modifica parziale del post)
+//*PATCH
 function modify(req, res) {
   route.patch("/:id", (req, res) => {
     res.send("Modifica parziale post");
   });
 }
-// delete post by id
+//! delete post by id
+//*DELETE
 function destroy(req, res) {
   const id = parseInt(req.params.id); // convert string to number and whit req.params.id I get the id from the url
   const index = posts.findIndex((e) => e.id === id); // find the index of the post by id
@@ -59,6 +91,7 @@ function destroy(req, res) {
     posts.splice(index, 1); // splice method remove the element from the array by index, the second parameter is the number of elements to remove
     res.sendStatus(204); // 204 status code means that the server has successfully fulfilled the request and that there is no additional content to send in the response payload body
   } else {
+    res.status(404);
     res.json({
       error: 404,
       message: "No post found with this ID",
