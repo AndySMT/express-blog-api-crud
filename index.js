@@ -3,6 +3,7 @@ const app = express(); // Create instance of express
 const port = 3000; // Set port
 const router = require("./routes/postsRoutes"); // Import posts routes
 const carsRouter = require("./routes/carsRoutes"); // Import cars routes
+const errorHandler = require("./middlewares/errorsHandler"); // Import error handler middleware
 
 //! middleware
 app.use(express.json()); // il body di qualunque richiesta sarà convertito in json
@@ -29,6 +30,7 @@ app.all("*", (req, res) => {
     message: "This page doesn't exist",
   });
 });
+app.use(errorHandler); // Uso error handler middleware
 
 app.listen(port, () => {
   console.log(`Server is running on 127.0.0.1:${port}`);
