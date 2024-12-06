@@ -4,11 +4,13 @@ const port = 3000; // Set port
 const router = require("./routes/postsRoutes"); // Import posts routes
 const carsRouter = require("./routes/carsRoutes"); // Import cars routes
 const errorHandler = require("./middlewares/errorsHandler"); // Import error handler middleware
+const time = require("./middlewares/checkTime"); // Import checkTime middleware
 
 //! middleware
 app.use(express.json()); // il body di qualunque richiesta sarà convertito in json
-
 app.use(express.static("public")); // Server static files
+
+app.use(time); // Uso il middleware checkTime
 
 app.get("/", (req, res) => {
   res.status(200).json({
